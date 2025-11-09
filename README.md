@@ -1,101 +1,90 @@
 # Inferra CLI
 
-A terminal-based client for interacting with the Inferra local server REST API. This command-line interface provides a modern chat experience directly in your terminal, with support for streaming responses, conversation history, and interactive setup.
+A terminal-based client for the Inferra local server REST API. Chat with your local AI models directly from the command line with streaming responses and full conversation history.
 
 ## Overview
 
-The Inferra CLI demonstrates how to build applications using the Inferra REST APIs. It connects to your Inferra server running on a mobile device and allows you to chat with local AI models from any computer on the same WiFi network.
+This is an example application showing how to build clients using the Inferra REST APIs. It connects to your Inferra server and provides a functional chat interface in your terminal.
 
-The tool is built with React and Ink to provide a rich terminal user interface. It handles streaming responses from the API, maintains conversation context, and provides an intuitive setup flow for connecting to your server.
+The CLI is built with React and Ink for terminal rendering, TypeScript for type safety, and uses the undici fetch API for HTTP streaming. It shows how to handle real-time streaming responses, manage conversation state, and create interactive terminal UIs.
 
 ## Features
 
-The CLI provides a complete chat experience in your terminal. When you start the application, it guides you through connecting to your Inferra server and selecting a model to use. The interface displays your conversation history with proper formatting and supports real-time streaming of model responses.
+Interactive setup flow that connects to your Inferra server and discovers available models automatically. The interface displays conversation history with proper formatting and streams model responses in real-time as they generate.
 
-The tool maintains conversation context across multiple turns, allowing you to have natural back-and-forth conversations with the AI models. All messages are displayed with clear visual distinction between user input and assistant responses.
+Conversation context is maintained across multiple turns for natural back-and-forth conversations. Messages are clearly distinguished between user input and assistant responses.
+
+## Technology Stack
+
+The application uses React with Ink to render components to the terminal instead of the browser. TypeScript provides type safety throughout the codebase. The build system uses esbuild for fast compilation.
+
+Network communication is handled through undici's fetch implementation with streaming support. The streaming chat endpoint returns server-sent events that are parsed and displayed progressively. State management uses React Context API for clean separation of concerns.
 
 ## Prerequisites
 
-You need Node.js version 20 or higher installed on your system. The CLI is built with modern JavaScript features and requires a recent Node.js runtime.
+Node.js version 20 or higher is required. The application uses modern JavaScript features and ESM modules.
 
-You also need a running Inferra server on your mobile device. Start the server from the Inferra app's Server tab and note the URL displayed, which typically looks like `http://192.168.1.XXX:8889`.
+You need a running Inferra server on your mobile device. Start it from the Server tab in the Inferra app and note the URL, typically `http://192.168.1.XXX:8889`.
 
 ## Installation
 
-Navigate to the inferra-cli directory and install the dependencies using npm:
+Install dependencies and build the project:
 
 ```bash
 cd inferra-cli
 npm install
-```
-
-Once the dependencies are installed, build the project:
-
-```bash
 npm run build
 ```
 
 ## Usage
 
-Start the CLI tool by running:
+Start the CLI:
 
 ```bash
 npm start
 ```
 
-The application will launch an interactive setup flow. You will be prompted to enter your Inferra server URL and select a model from the available options. Use the arrow keys to navigate through the model selection and press Enter to confirm your choice.
-
-After setup is complete, you can start chatting with your selected model. Type your message and press Enter to send it. The model's response will stream in real-time, appearing character by character as it generates.
-
-The conversation history is maintained throughout your session. You can see all previous messages scrolling up as new ones arrive. To exit the application, press Ctrl+C at any time.
+Follow the interactive setup to enter your server URL and select a model using arrow keys. After setup, type messages and press Enter to send. Model responses stream in real-time. Press Ctrl+C to exit.
 
 ## Configuration
 
-The CLI automatically discovers available models from your Inferra server. If you need to change servers or models, simply restart the application and go through the setup flow again.
-
-The tool does not persist your server URL or model selection between sessions. This ensures you always have the flexibility to connect to different servers or use different models without managing configuration files.
+Models are discovered automatically from your server. Server URL and model selection are not persisted between sessions. Restart the application to change servers or models.
 
 ## Development
 
-The source code is organized into several directories. The core API client is in `src/core/api-client.ts`, which handles communication with the Inferra REST API. The UI components are in `src/ui/`, built using React and Ink for terminal rendering.
-
-To work on the code, you can use the development mode which watches for changes and rebuilds automatically:
+Run in development mode with automatic rebuilds:
 
 ```bash
 npm run dev
 ```
 
-The project uses TypeScript for type safety and esbuild for fast compilation. The entry point is `src/index.ts`, which initializes the UI and starts the application.
+The codebase uses TypeScript compiled with esbuild. Entry point is `src/index.ts`. Core API client is in `src/core/api-client.ts`. UI components are in `src/ui/` using React and Ink.
 
 ## Architecture
 
-The CLI is structured as a React application that renders to the terminal instead of a web browser. It uses the Ink library to create interactive terminal components with familiar React patterns.
+React components render to the terminal via Ink instead of DOM. State management uses React Context API for separation between UI and business logic. Streaming uses async generators that yield text chunks from the server.
 
-The application state is managed through React contexts, providing a clean separation between the UI layer and the business logic. The streaming functionality is handled by async generators that yield chunks of text as they arrive from the server.
-
-The main chat interface maintains conversation history and handles user input through Ink's input hooks. Messages are stored in an array and displayed with proper formatting, including timestamps and role indicators.
+The chat interface maintains conversation history in a React state array. User input is handled through Ink's useInput hook. Messages include timestamps and role indicators for clear display formatting.
 
 ## API Integration
 
-The tool communicates with the Inferra server through standard HTTP requests. It uses the fetch API with streaming support to handle real-time responses from the chat endpoint.
+Communication uses standard HTTP with undici's fetch implementation. POST requests to `/api/chat` include conversation history. The server streams JSON chunks containing response text that are parsed and displayed progressively.
 
-When you send a message, the CLI makes a POST request to the `/api/chat` endpoint with your conversation history. The server responds with a stream of JSON chunks, each containing a piece of the response text. The CLI parses these chunks and displays them progressively.
-
-Model discovery is done through the `/api/tags` endpoint, which returns a list of available models on the server. This allows the CLI to present an up-to-date selection menu without hardcoding model names.
+Model discovery queries the `/api/tags` endpoint for available models. This provides an up-to-date selection menu without hardcoded values.
 
 ## Troubleshooting
 
-If you cannot connect to the server, verify that your Inferra app has the server running and that your computer is on the same WiFi network as your mobile device. Check that the URL you entered matches exactly what is displayed in the Inferra app.
+Connection issues: Verify the Inferra server is running and your computer is on the same WiFi network. Check the URL matches what the Inferra app displays.
 
-If the model list appears empty, ensure that you have downloaded at least one model in the Inferra app. Models must be stored locally on the device before they appear in the CLI.
+Empty model list: Ensure at least one model is downloaded in the Inferra app. Models must be stored locally before they appear in the CLI.
 
-For streaming issues or interrupted responses, check your network connection. The CLI requires a stable WiFi connection to maintain the streaming session.
+Streaming problems: Check your network connection. A stable WiFi connection is required for streaming sessions.
 
 ## Contributing
 
-This CLI tool serves as a reference implementation for building applications with the Inferra REST APIs. The code is intentionally structured to be readable and educational, showing best practices for API integration and terminal UI development.
+This is an example application for the Inferra REST APIs. The code is structured to be readable and educational, showing best practices for API integration and terminal UI development with React and Ink.
 
-If you want to add features or fix bugs, follow the standard contribution process for the Inferra project. Open an issue first to discuss your proposed changes, then submit a pull request with your implementation.
+To contribute, open an issue to discuss your changes, then submit a pull request with your implementation.
 
 ## License
 
