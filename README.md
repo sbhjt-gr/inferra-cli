@@ -32,6 +32,36 @@ Inferra CLI is the terminal companion to the Inferra mobile app. It connects dir
 - Network connectivity between your computer and the device (same WiFi)
 
 ### Installation
+
+Install the CLI globally using npm:
+
+```bash
+npm install -g inferra-cli
+```
+
+Or use npx to run it without installation:
+
+```bash
+npx inferra-cli
+```
+
+### Running the CLI
+
+1. Start your Inferra server from the mobile app (Server tab).
+2. Run the CLI:
+
+```bash
+inferra
+```
+
+3. Follow the guided setup to connect to your server.
+
+When prompted, paste the server URL (for example `http://192.168.1.88:8889`), choose a model, and begin chatting. Responses will stream token-by-token until completion or until you stop the generation.
+
+### Development Setup
+
+If you want to contribute or run from source:
+
 1. Clone or download the repository.
 2. Move into the CLI workspace and install dependencies.
 3. Build the distributable bundle.
@@ -42,15 +72,11 @@ npm install
 npm run build
 ```
 
-### Running the CLI
-1. Start your Inferra server from the mobile app.
-2. Launch the CLI and follow the guided setup.
+Then run locally:
 
 ```bash
 npm start
 ```
-
-When prompted, paste the server URL (for example `http://192.168.1.88:8889`), choose a model, and begin chatting. Responses will stream token-by-token until completion or until you stop the generation.
 
 ## Configuration
 

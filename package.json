@@ -27,10 +27,23 @@
     "llm",
     "cli",
     "inferra",
-    "local-ai"
+    "local-ai",
+    "terminal",
+    "chat",
+    "ollama",
+    "local-server"
   ],
-  "author": "",
+  "author": "Inferra",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sbhjt-gr/inferra.git",
+    "directory": "inferra-cli/inferra-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/sbhjt-gr/inferra/issues"
+  },
+  "homepage": "https://github.com/sbhjt-gr/inferra/tree/main/inferra-cli/inferra-cli#readme",
   "files": [
     "dist/",
     "README.md",
