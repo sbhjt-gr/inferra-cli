@@ -53,12 +53,15 @@ const Setup = ({ onComplete }: SetupProps) => {
               }
 
               try {
-                await client.loadModel(modelList[idx].name);
+                const selectedModel = modelList[idx];
+                if (selectedModel.model_type !== 'apple-foundation') {
+                  await client.loadModel(selectedModel.name);
+                }
                 configManager.set('server.url', finalUrl);
-                configManager.set('defaults.model', modelList[idx].name);
+                configManager.set('defaults.model', selectedModel.name);
                 await configManager.save();
                 rl.close();
-                onComplete(finalUrl, modelList[idx].name);
+                onComplete(finalUrl, selectedModel.name);
               } catch (err) {
                 console.error('Failed to load model:', err instanceof Error ? err.message : String(err));
                 rl.close();
@@ -101,7 +104,11 @@ const Setup = ({ onComplete }: SetupProps) => {
       setLoading(true);
       setStep('loading');
       const client = new InferraClient(url);
-      await client.loadModel(model.name);
+      
+      if (model.model_type !== 'apple-foundation') {
+        await client.loadModel(model.name);
+      }
+      
       configManager.set('server.url', url);
       configManager.set('defaults.model', model.name);
       await configManager.save();

@@ -37,7 +37,7 @@ var init_DefaultAppHeader = __esm({
     logo = `
  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557
  \u2551  INFERRA CLI v2   \u2551
- \u2551  Local AI Studio  \u2551
+ \u2551  Local AI Server  \u2551
  \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255D
 `;
     DefaultAppHeader = () => {
@@ -241,7 +241,20 @@ var init_api_client = __esm({
       }
       async listModels() {
         const response = await this.request("/api/tags");
-        return response.models || [];
+        let models = response.models || [];
+        try {
+          const afStatus = await this.getAppleFoundationStatus();
+          if (afStatus.enabled && afStatus.available) {
+            models.push({
+              name: "apple-foundation",
+              model_type: "apple-foundation",
+              is_external: true,
+              size: 0
+            });
+          }
+        } catch (err) {
+        }
+        return models;
       }
       async listLoadedModels() {
         const response = await this.request("/api/ps");

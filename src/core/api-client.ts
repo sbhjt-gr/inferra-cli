@@ -200,7 +200,22 @@ class InferraClient {
 
   async listModels() {
     const response = await this.request('/api/tags');
-    return response.models || [];
+    let models = response.models || [];
+    
+    try {
+      const afStatus = await this.getAppleFoundationStatus();
+      if (afStatus.enabled && afStatus.available) {
+        models.push({
+          name: 'apple-foundation',
+          model_type: 'apple-foundation',
+          is_external: true,
+          size: 0
+        });
+      }
+    } catch (err) {
+    }
+    
+    return models;
   }
 
   async listLoadedModels() {
