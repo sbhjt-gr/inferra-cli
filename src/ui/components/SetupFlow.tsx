@@ -13,52 +13,22 @@ type SetupStep = 'url' | 'models' | 'loading' | 'complete';
 export const SetupFlow = ({ onComplete }: SetupFlowProps) => {
   const [step, setStep] = useState<SetupStep>('url');
   const [url, setUrl] = useState('');
-  const [cursor, setCursor] = useState(0);
   const [models, setModels] = useState<any[]>([]);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { exit } = useApp();
 
-  useEffect(() => {
-    // Keep cursor in range when the URL changes
-    setCursor((c) => Math.min(c, url.length));
-  }, [url]);
-
-  useEffect(() => {
-    if (step === 'url') {
-      setCursor(url.length);
-    }
-  }, [step]);
-
   useInput((input, key) => {
     if (step === 'url') {
       if (key.return) {
         validateAndLoadModels();
-      } else if (key.leftArrow) {
-        setCursor((c) => Math.max(0, c - 1));
-      } else if (key.rightArrow) {
-        setCursor((c) => Math.min(url.length, c + 1));
-      } else if (key.backspace || (key.delete && cursor === url.length)) {
-        setUrl((prev) => {
-          if (cursor <= 0) return prev;
-          const next = prev.slice(0, cursor - 1) + prev.slice(cursor);
-          setCursor((c) => Math.max(0, c - 1));
-          return next;
-        });
-      } else if (key.delete) {
-        setUrl((prev) => prev.slice(0, cursor) + prev.slice(cursor + 1));
-      } else if (!key.ctrl && input) {
-        const sanitized = input.replace(/[\r\n]+/g, '');
-        if (sanitized) {
-          setUrl((prev) => {
-            const next = prev.slice(0, cursor) + sanitized + prev.slice(cursor);
-            setCursor((c) => c + sanitized.length);
-            return next;
-          });
-        }
+      } else if (key.backspace || key.delete) {
+        setUrl((prev) => prev.slice(0, -1));
+      } else if (!key.ctrl && !key.meta && input) {
+        setUrl((prev) => prev + input.replace(/[\r\n\t]+/g, ''));
       }
-  } else if (step === 'models') {
+    } else if (step === 'models') {
       if (key.upArrow) {
         setSelectedIdx((prev) => Math.max(0, prev - 1));
       } else if (key.downArrow) {
@@ -117,17 +87,11 @@ export const SetupFlow = ({ onComplete }: SetupFlowProps) => {
             Setup - Enter Server URL
           </Text>
           <Box marginY={1} paddingX={2}>
-            <Text>
-              URL:{' '}
-              <Text>
-                {url.slice(0, cursor)}
-                <Text backgroundColor={colorMap.secondary} color="black">
-                  {cursor < url.length ? url[cursor] : ' '}
-                </Text>
-                {url.slice(cursor + (cursor < url.length ? 1 : 0))}
-              </Text>
-            </Text>
-            {loading && <Spinner />}
+            <Box flexDirection="row">
+              <Text>URL: </Text>
+              <Text>{url || ' '}</Text>
+              {loading && <Box marginLeft={1}><Spinner /></Box>}
+            </Box>
           </Box>
           {error && <Text color={colorMap.error}>{error}</Text>}
         </Box>

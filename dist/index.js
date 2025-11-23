@@ -498,7 +498,7 @@ var init_ChatInterface = __esm({
 });
 
 // src/ui/components/SetupFlow.tsx
-import { useState as useState2, useEffect as useEffect2 } from "react";
+import { useState as useState2 } from "react";
 import { Box as Box5, Text as Text4, useInput as useInput2, useApp as useApp2 } from "ink";
 import Spinner2 from "ink-spinner";
 import { jsx as jsx5, jsxs as jsxs3 } from "react/jsx-runtime";
@@ -511,47 +511,19 @@ var init_SetupFlow = __esm({
     SetupFlow = ({ onComplete }) => {
       const [step, setStep] = useState2("url");
       const [url, setUrl] = useState2("");
-      const [cursor, setCursor] = useState2(0);
       const [models, setModels] = useState2([]);
       const [selectedIdx, setSelectedIdx] = useState2(0);
       const [loading, setLoading] = useState2(false);
       const [error, setError] = useState2("");
       const { exit } = useApp2();
-      useEffect2(() => {
-        setCursor((c) => Math.min(c, url.length));
-      }, [url]);
-      useEffect2(() => {
-        if (step === "url") {
-          setCursor(url.length);
-        }
-      }, [step]);
       useInput2((input, key) => {
         if (step === "url") {
           if (key.return) {
             validateAndLoadModels();
-          } else if (key.leftArrow) {
-            setCursor((c) => Math.max(0, c - 1));
-          } else if (key.rightArrow) {
-            setCursor((c) => Math.min(url.length, c + 1));
-          } else if (key.backspace || key.delete && cursor === url.length) {
-            setUrl((prev) => {
-              if (cursor <= 0)
-                return prev;
-              const next = prev.slice(0, cursor - 1) + prev.slice(cursor);
-              setCursor((c) => Math.max(0, c - 1));
-              return next;
-            });
-          } else if (key.delete) {
-            setUrl((prev) => prev.slice(0, cursor) + prev.slice(cursor + 1));
-          } else if (!key.ctrl && input) {
-            const sanitized = input.replace(/[\r\n]+/g, "");
-            if (sanitized) {
-              setUrl((prev) => {
-                const next = prev.slice(0, cursor) + sanitized + prev.slice(cursor);
-                setCursor((c) => c + sanitized.length);
-                return next;
-              });
-            }
+          } else if (key.backspace || key.delete) {
+            setUrl((prev) => prev.slice(0, -1));
+          } else if (!key.ctrl && !key.meta && input) {
+            setUrl((prev) => prev + input.replace(/[\r\n\t]+/g, ""));
           }
         } else if (step === "models") {
           if (key.upArrow) {
@@ -600,18 +572,11 @@ var init_SetupFlow = __esm({
       return /* @__PURE__ */ jsxs3(Box5, { flexDirection: "column", padding: 2, children: [
         step === "url" && /* @__PURE__ */ jsxs3(Box5, { flexDirection: "column", children: [
           /* @__PURE__ */ jsx5(Text4, { color: colorMap.primary, bold: true, children: "Setup - Enter Server URL" }),
-          /* @__PURE__ */ jsxs3(Box5, { marginY: 1, paddingX: 2, children: [
-            /* @__PURE__ */ jsxs3(Text4, { children: [
-              "URL:",
-              " ",
-              /* @__PURE__ */ jsxs3(Text4, { children: [
-                url.slice(0, cursor),
-                /* @__PURE__ */ jsx5(Text4, { backgroundColor: colorMap.secondary, color: "black", children: cursor < url.length ? url[cursor] : " " }),
-                url.slice(cursor + (cursor < url.length ? 1 : 0))
-              ] })
-            ] }),
-            loading && /* @__PURE__ */ jsx5(Spinner2, {})
-          ] }),
+          /* @__PURE__ */ jsx5(Box5, { marginY: 1, paddingX: 2, children: /* @__PURE__ */ jsxs3(Box5, { flexDirection: "row", children: [
+            /* @__PURE__ */ jsx5(Text4, { children: "URL: " }),
+            /* @__PURE__ */ jsx5(Text4, { children: url || " " }),
+            loading && /* @__PURE__ */ jsx5(Box5, { marginLeft: 1, children: /* @__PURE__ */ jsx5(Spinner2, {}) })
+          ] }) }),
           error && /* @__PURE__ */ jsx5(Text4, { color: colorMap.error, children: error })
         ] }),
         step === "models" && /* @__PURE__ */ jsxs3(Box5, { flexDirection: "column", children: [
@@ -1276,4 +1241,3 @@ start().catch((error) => {
   }
   process.exit(1);
 });
-//# sourceMappingURL=index.js.map
