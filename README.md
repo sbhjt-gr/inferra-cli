@@ -5,6 +5,8 @@
 	<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License MIT"></a>
 </p>
 
+This is an example application that demonstrates how to build apps using the [Inferra REST API](https://github.com/sbhjt-gr/inferra/blob/main/docs/REST_APIs.md). It showcases integration patterns for chat streaming, model management, and server communication.
+
 Inferra CLI is the terminal companion to the Inferra mobile app. It connects directly to your Inferra device server so you can chat with on-device or remote models from any computer while keeping the same streaming experience and conversation controls.
 
 ## Features
