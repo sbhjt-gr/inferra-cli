@@ -544,11 +544,14 @@ var init_SetupFlow = __esm({
           } else if (key.delete) {
             setUrl((prev) => prev.slice(0, cursor) + prev.slice(cursor + 1));
           } else if (!key.ctrl && input) {
-            setUrl((prev) => {
-              const next = prev.slice(0, cursor) + input + prev.slice(cursor);
-              setCursor((c) => c + input.length);
-              return next;
-            });
+            const sanitized = input.replace(/[\r\n]+/g, "");
+            if (sanitized) {
+              setUrl((prev) => {
+                const next = prev.slice(0, cursor) + sanitized + prev.slice(cursor);
+                setCursor((c) => c + sanitized.length);
+                return next;
+              });
+            }
           }
         } else if (step === "models") {
           if (key.upArrow) {

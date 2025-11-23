@@ -1,6 +1,6 @@
 {
   "name": "inferra-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Terminal client for interacting with the Inferra local server REST API",
   "engines": {
     "node": ">=20.0.0"
