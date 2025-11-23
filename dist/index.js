@@ -498,8 +498,8 @@ var init_ChatInterface = __esm({
 });
 
 // src/ui/components/SetupFlow.tsx
-import { useState as useState2 } from "react";
-import { Box as Box5, Text as Text4, useInput as useInput2 } from "ink";
+import { useState as useState2, useEffect as useEffect2 } from "react";
+import { Box as Box5, Text as Text4, useInput as useInput2, useApp as useApp2 } from "ink";
 import Spinner2 from "ink-spinner";
 import { jsx as jsx5, jsxs as jsxs3 } from "react/jsx-runtime";
 var SetupFlow;
@@ -511,18 +511,44 @@ var init_SetupFlow = __esm({
     SetupFlow = ({ onComplete }) => {
       const [step, setStep] = useState2("url");
       const [url, setUrl] = useState2("");
+      const [cursor, setCursor] = useState2(0);
       const [models, setModels] = useState2([]);
       const [selectedIdx, setSelectedIdx] = useState2(0);
       const [loading, setLoading] = useState2(false);
       const [error, setError] = useState2("");
+      const { exit } = useApp2();
+      useEffect2(() => {
+        setCursor((c) => Math.min(c, url.length));
+      }, [url]);
+      useEffect2(() => {
+        if (step === "url") {
+          setCursor(url.length);
+        }
+      }, [step]);
       useInput2((input, key) => {
         if (step === "url") {
           if (key.return) {
             validateAndLoadModels();
-          } else if (key.backspace) {
-            setUrl((prev) => prev.slice(0, -1));
+          } else if (key.leftArrow) {
+            setCursor((c) => Math.max(0, c - 1));
+          } else if (key.rightArrow) {
+            setCursor((c) => Math.min(url.length, c + 1));
+          } else if (key.backspace || key.delete && cursor === url.length) {
+            setUrl((prev) => {
+              if (cursor <= 0)
+                return prev;
+              const next = prev.slice(0, cursor - 1) + prev.slice(cursor);
+              setCursor((c) => Math.max(0, c - 1));
+              return next;
+            });
+          } else if (key.delete) {
+            setUrl((prev) => prev.slice(0, cursor) + prev.slice(cursor + 1));
           } else if (!key.ctrl && input) {
-            setUrl((prev) => prev + input);
+            setUrl((prev) => {
+              const next = prev.slice(0, cursor) + input + prev.slice(cursor);
+              setCursor((c) => c + input.length);
+              return next;
+            });
           }
         } else if (step === "models") {
           if (key.upArrow) {
@@ -532,6 +558,9 @@ var init_SetupFlow = __esm({
           } else if (key.return) {
             selectModel();
           }
+        }
+        if (key.ctrl && input === "c" || key.ctrl && input === "d") {
+          exit();
         }
       });
       const validateAndLoadModels = async () => {
@@ -570,8 +599,13 @@ var init_SetupFlow = __esm({
           /* @__PURE__ */ jsx5(Text4, { color: colorMap.primary, bold: true, children: "Setup - Enter Server URL" }),
           /* @__PURE__ */ jsxs3(Box5, { marginY: 1, paddingX: 2, children: [
             /* @__PURE__ */ jsxs3(Text4, { children: [
-              "URL: ",
-              url
+              "URL:",
+              " ",
+              /* @__PURE__ */ jsxs3(Text4, { children: [
+                url.slice(0, cursor),
+                /* @__PURE__ */ jsx5(Text4, { backgroundColor: colorMap.secondary, color: "black", children: cursor < url.length ? url[cursor] : " " }),
+                url.slice(cursor + (cursor < url.length ? 1 : 0))
+              ] })
             ] }),
             loading && /* @__PURE__ */ jsx5(Spinner2, {})
           ] }),

@@ -1,6 +1,6 @@
 ## Inferra CLI
 <p>
-	<a href="https://www.npmjs.com/package/inferra-cli" target="_blank"><img src="https://img.shields.io/badge/CLI_Version-1.0.0-6a1b9a" alt="CLI Version 1.0.0"></a>
+	<a href="https://www.npmjs.com/package/inferra-cli" target="_blank"><img src="https://img.shields.io/badge/CLI_Version-1.0.0-6a1b9a" alt="CLI Version 1.0.1"></a>
 	<a href="https://nodejs.org" target="_blank"><img src="https://img.shields.io/badge/Node.js-%E2%89%A520.0-43853d?logo=node.js&logoColor=white" alt="Node 20 or higher"></a>
 	<a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License MIT"></a>
 </p>
