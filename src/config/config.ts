@@ -55,7 +55,7 @@ class ConfigManager {
   private config: Config;
 
   constructor() {
-    this.configPath = path.join(os.homedir(), '.inferra', 'config.json');
+    this.configPath = path.join(os.homedir(), '.inferrlm', 'config.json');
     this.config = { ...defaultConfig };
   }
 

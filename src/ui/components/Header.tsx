@@ -4,7 +4,7 @@ import { colorMap } from '../colors.js';
 
 const logo = `
  ╔═══════════════════╗
- ║  INFERRA CLI v2   ║
+ ║ INFERRLM CLI v2   ║
  ║  Local AI Server  ║
  ╚═══════════════════╝
 `;

@@ -1,8 +1,8 @@
 export const uiConfig = {
   header: {
-    title: 'INFERRA CLI v2',
-    subtitle: 'INFERRA Local AI Server',
-    description: 'INFERRA Local AI Assistant and Development Tools',
+    title: 'INFERRLM CLI v2',
+    subtitle: 'InferrLM Local AI Server',
+    description: 'InferrLM Local AI Assistant and Development Tools',
   },
   footer: {
     help: '[Enter: send] [Ctrl+C: exit] [Ctrl+K: clear]',

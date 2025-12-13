@@ -34,7 +34,7 @@ interface GenerateParams {
   max_tokens?: number;
 }
 
-class InferraClient {
+class InferrLMClient {
   baseUrl: string;
 
   constructor(baseUrl: string) {
@@ -329,4 +329,4 @@ class InferraClient {
   }
 }
 
-export { InferraClient, ApiError };
+export { InferrLMClient, ApiError };

@@ -1,4 +1,4 @@
-import { InferraClient } from '../core/api-client.js';
+import { InferrLMClient } from '../core/api-client.js';
 import { configManager } from '../config/config.js';
 
 const serverCommand = {
@@ -41,7 +41,7 @@ const serverCommand = {
 
 async function checkServerStatus(url: string) {
   try {
-    const client = new InferraClient(url);
+    const client = new InferrLMClient(url);
     const status = await client.getServerStatus();
     console.log('✅ Server is running');
     console.log('URL:', url);
@@ -64,13 +64,12 @@ function showServerConfig() {
 
 async function discoverServers() {
   console.log('Discovering servers...');
-  // TODO: Implement server discovery
   console.log('Server discovery not yet implemented');
 }
 
 async function showServerInfo(url: string) {
   try {
-    const client = new InferraClient(url);
+    const client = new InferrLMClient(url);
     const version = await client.getVersion();
     console.log('Server Information:');
     console.log('Version:', version);

@@ -1,4 +1,4 @@
-import { InferraClient } from '../core/api-client.js';
+import { InferrLMClient } from '../core/api-client.js';
 import { configManager } from '../config/config.js';
 
 const modelsCommand = {
@@ -23,7 +23,7 @@ const modelsCommand = {
     const url = configManager.get().server.url;
 
     try {
-      const client = new InferraClient(url);
+      const client = new InferrLMClient(url);
 
       switch (action) {
         case 'list':
@@ -77,7 +77,7 @@ const modelsCommand = {
   },
 };
 
-async function listModels(client: InferraClient) {
+async function listModels(client: InferrLMClient) {
   const models = await client.listModels();
   console.log('Available models:');
   models.forEach((model: any) => {
@@ -85,31 +85,30 @@ async function listModels(client: InferraClient) {
   });
 }
 
-async function loadModel(client: InferraClient, modelName: string) {
+async function loadModel(client: InferrLMClient, modelName: string) {
   console.log(`Loading model: ${modelName}`);
   await client.loadModel(modelName);
   console.log('✅ Model loaded successfully');
 }
 
-async function unloadModel(client: InferraClient, modelName: string) {
+async function unloadModel(client: InferrLMClient, modelName: string) {
   console.log(`Unloading model: ${modelName}`);
   await client.unloadModel(modelName);
   console.log('✅ Model unloaded successfully');
 }
 
-async function getModelInfo(client: InferraClient, modelName: string) {
+async function getModelInfo(client: InferrLMClient, modelName: string) {
   const info = await client.getModelInfo(modelName);
   console.log(`Model: ${modelName}`);
   console.log(JSON.stringify(info, null, 2));
 }
 
-async function pullModel(client: InferraClient, modelName: string) {
+async function pullModel(client: InferrLMClient, modelName: string) {
   console.log(`Pulling model: ${modelName}`);
-  // TODO: Implement pull with URL
   console.log('Pull functionality not yet implemented');
 }
 
-async function deleteModel(client: InferraClient, modelName: string) {
+async function deleteModel(client: InferrLMClient, modelName: string) {
   console.log(`Deleting model: ${modelName}`);
   await client.deleteModel(modelName);
   console.log('✅ Model deleted successfully');

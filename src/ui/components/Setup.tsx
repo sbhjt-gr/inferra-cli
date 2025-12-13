@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, useInput, useApp } from 'ink';
 import Spinner from 'ink-spinner';
-import { InferraClient } from '../../core/api-client.js';
+import { InferrLMClient } from '../../core/api-client.js';
 import { configManager } from '../../config/config.js';
 import { createInterface } from 'readline';
 
@@ -31,7 +31,7 @@ const Setup = ({ onComplete }: SetupProps) => {
         const finalUrl = serverUrl.trim() || 'http://192.168.1.105:8889';
         
         try {
-          const client = new InferraClient(finalUrl);
+          const client = new InferrLMClient(finalUrl);
           const modelList = await client.listModels();
           
           if (modelList.length === 0) {
@@ -81,7 +81,7 @@ const Setup = ({ onComplete }: SetupProps) => {
   const loadModels = async (serverUrl: string) => {
     try {
       setLoading(true);
-      const client = new InferraClient(serverUrl);
+      const client = new InferrLMClient(serverUrl);
       const modelList = await client.listModels();
       if (modelList.length === 0) {
         setError('No models available on server');
@@ -103,7 +103,7 @@ const Setup = ({ onComplete }: SetupProps) => {
     try {
       setLoading(true);
       setStep('loading');
-      const client = new InferraClient(url);
+      const client = new InferrLMClient(url);
       
       if (model.model_type !== 'apple-foundation') {
         await client.loadModel(model.name);
@@ -161,7 +161,7 @@ const Setup = ({ onComplete }: SetupProps) => {
     return (
       <Box flexDirection="column" padding={2}>
         <Text bold color="cyan">
-          Inferra CLI Setup
+          InferrLM CLI Setup
         </Text>
         <Box marginY={1}>
           <Text>Enter server URL:</Text>

@@ -1,14 +1,14 @@
 {
-  "name": "inferra-cli",
-  "version": "1.0.2",
-  "description": "Terminal client for interacting with the Inferra local server REST API",
+  "name": "inferrlm",
+  "version": "1.0.4",
+  "description": "Terminal client for interacting with the InferrLM local server REST API",
   "engines": {
     "node": ">=20.0.0"
   },
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "inferra": "dist/index.js"
+    "inferrlm": "dist/index.js"
   },
   "scripts": {
     "build": "node esbuild.config.cjs",
@@ -26,13 +26,13 @@
     "ai",
     "llm",
     "cli",
-    "inferra",
+    "inferrlm",
     "local-ai",
     "terminal",
     "chat",
     "local-server"
   ],
-  "author": "Inferra",
+  "author": "InferrLM",
   "license": "MIT",
   "repository": {
     "type": "git",
