@@ -1,4 +1,4 @@
-import { InferraClient } from '../core/api-client.js';
+import { InferrLMClient } from '../core/api-client.js';
 import { configManager } from '../config/config.js';
 
 const ragCommand = {
@@ -27,7 +27,7 @@ const ragCommand = {
     const url = configManager.get().server.url;
 
     try {
-      const client = new InferraClient(url);
+      const client = new InferrLMClient(url);
 
       switch (action) {
         case 'ingest':
@@ -60,13 +60,13 @@ const ragCommand = {
   },
 };
 
-async function ingestFiles(client: InferraClient, files: string[]) {
+async function ingestFiles(client: InferrLMClient, files: string[]) {
   console.log(`Ingesting ${files.length} file(s)...`);
   await client.ingestFiles(files);
   console.log('✅ Files ingested successfully');
 }
 
-async function listDocuments(client: InferraClient) {
+async function listDocuments(client: InferrLMClient) {
   const status = await client.listRAGDocuments();
   console.log('RAG Status:');
   console.log(`Enabled: ${status.enabled}`);
@@ -74,7 +74,7 @@ async function listDocuments(client: InferraClient) {
   console.log(`Ready: ${status.ready}`);
 }
 
-async function queryRAG(client: InferraClient, query: string) {
+async function queryRAG(client: InferrLMClient, query: string) {
   console.log(`Querying: "${query}"`);
   const results = await client.queryRAG(query);
   console.log('Results:');

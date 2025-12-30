@@ -18,7 +18,7 @@ async function runCli() {
   }
 
   const argv = await yargs(args)
-    .scriptName('inferra')
+    .scriptName('inferrlm')
     .usage('$0 <cmd> [args]')
     .command('chat', 'Start interactive chat session', chatCommand)
     .command('generate', 'Generate text completion', generateCommand)

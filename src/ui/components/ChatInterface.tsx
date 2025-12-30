@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Box, Text, useInput, useApp } from 'ink';
 import Spinner from 'ink-spinner';
-import { InferraClient } from '../../core/api-client.js';
+import { InferrLMClient } from '../../core/api-client.js';
 import { StreamingContext } from '../contexts/StreamingContext.js';
 import { colorMap } from '../colors.js';
 
@@ -26,10 +26,10 @@ export const ChatInterface = ({ initialMessage, model, serverUrl, onExit }: Chat
   const [streamingContent, setStreamingContent] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const { exit } = useApp();
-  const clientRef = useRef<InferraClient | null>(null);
+  const clientRef = useRef<InferrLMClient | null>(null);
 
   useEffect(() => {
-    clientRef.current = new InferraClient(serverUrl);
+    clientRef.current = new InferrLMClient(serverUrl);
   }, [serverUrl]);
 
   const sendMessage = async () => {

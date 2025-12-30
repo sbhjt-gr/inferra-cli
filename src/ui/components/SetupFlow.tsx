@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, useInput, useApp } from 'ink';
 import Spinner from 'ink-spinner';
-import { InferraClient } from '../../core/api-client.js';
+import { InferrLMClient } from '../../core/api-client.js';
 import { colorMap } from '../colors.js';
 
 interface SetupFlowProps {
@@ -49,7 +49,7 @@ export const SetupFlow = ({ onComplete }: SetupFlowProps) => {
     }
     setLoading(true);
     try {
-      const client = new InferraClient(url);
+      const client = new InferrLMClient(url);
       const modelList = await client.listModels();
       if (modelList.length === 0) {
         setError('no_models');

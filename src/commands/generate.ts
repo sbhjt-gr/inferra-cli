@@ -1,4 +1,4 @@
-import { InferraClient } from '../core/api-client.js';
+import { InferrLMClient } from '../core/api-client.js';
 import { configManager } from '../config/config.js';
 
 const generateCommand = {
@@ -34,7 +34,7 @@ const generateCommand = {
     const url = configManager.get().server.url;
 
     try {
-      const client = new InferraClient(url);
+      const client = new InferrLMClient(url);
 
       if (stream) {
         console.log('Streaming generation...');
